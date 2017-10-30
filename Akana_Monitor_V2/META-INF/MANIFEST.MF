@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: com.dynatrace.akanav2;singleton:=true
+Bundle-Name: Akana Monitor V2
+Bundle-Version: 0.0.1
+Bundle-ClassPath: .,lib/com.dynatrace.diagnostics.sdk.jar,lib/commons-
+ logging-1.2.jar,lib/gson-2.8.2.jar,lib/httpclient-4.5.3.jar,lib/httpc
+ ore-4.4.6.jar
+Require-Bundle: com.dynatrace.diagnostics.sdk
+Bundle-ManifestVersion: 2
+Bundle-Vendor: Dynatrace
+

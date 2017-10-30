@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<!-- plugin.xml file written by Dynatrace Client 7.0.5 -->
+<plugin>
+  <extension point="com.dynatrace.diagnostics.pdk.pluginconfig" id="com.dynatrace.akanav2" name="Akana Monitor V2">
+    <information>
+      <category value="" />
+      <displayname value="Akana Monitor V2" />
+      <description value="Akana Monitor V2" />
+      <supportlevel value="unsupported" />
+    </information>
+    <configuration>
+      <property key="protocol" label="HTTP / HTTPS Protocol" type="list" description="HTTP or HTTPS" default="HTTPS">
+        <list>
+          <item value="HTTPS" />
+          <item value="HTTP" />
+        </list>
+      </property>
+      <property key="environment" label="Akana Environment" type="string" description="Akana Environment (eg. developer.mysite.com)" default="" multiline="false" />
+      <property key="ignoreList" label="Ignore Endpoints" type="string" description="(optional) Add each endpoint you want to ignore. 1 per line." default="" multiline="true" />
+      <property key="username" label="Akana Username" type="string" description="My property description ..." default="" multiline="false" />
+      <property key="password" label="Akana Password" type="password" description="Akana Password" default="" />
+    </configuration>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitor" id="com.dynatrace.akanav2.monitor" name="Akana Monitor v2">
+    <plugin configid="com.dynatrace.akanav2" class="com.dynatrace.akanav2.AkanaMonitor" />
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.akanav2.monitor.metricgroup1" name="Akana Metrics">
+    <metricgroup monitorid="com.dynatrace.akanav2.monitor">
+      <metric defaultrate="purepath" name="Minimum Response Time" unit="ms" description="Akana Minimum Response Time">
+        <property key="JSON_Name" value="minResponseTime" optional="false" />
+      </metric>
+      <metric defaultrate="purepath" name="Average Response Time" unit="ms" description="Akana Average Response Time">
+        <property key="JSON_Name" value="avgResponseTime" optional="false" />
+      </metric>
+      <metric defaultrate="purepath" name="Maximum Response Time" unit="ms" description="Akana Maximum Response Time">
+        <property key="JSON_Name" value="maxResponseTime" optional="false" />
+      </metric>
+      <metric defaultrate="purepath" name="Total Count" unit="number" description="Total Number of Calls">
+        <property key="JSON_Name" value="totalCount" optional="false" />
+      </metric>
+      <metric defaultrate="purepath" name="Success Count" unit="number" description="Number of Successful Calls">
+        <property key="JSON_Name" value="successCount" optional="false" />
+      </metric>
+      <metric defaultrate="purepath" name="Fault Count" unit="number" description="Total Number of Faults">
+        <property key="JSON_Name" value="faultCount" optional="false" />
+      </metric>
+    </metricgroup>
+  </extension>
+</plugin>
