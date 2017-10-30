@@ -33,7 +33,7 @@ Use Basic Authentication with your Dynatrace AppMon username and password.
 
 Request Body:
 {
-  "type" : "Akana REST Monitor",
+  "type" : "Akana Monitor v2",
   "executiontarget" : "COLLECTOR-NAME@COLLECTOR-HOST",
   "schedule" : "1m",     <-- Execute this monitor once per minute.
   "taskparameters" :
