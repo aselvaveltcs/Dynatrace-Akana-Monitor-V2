@@ -15,5 +15,7 @@ public class IConstants
 	public static String COOKIE_VALUE = "cookieVal";
 	public static String TOKEN_KEY = "tokenKey";
 	public static String TOKEN_VALUE = "tokenValue";
+	
+	public static int HTTP_TIMEOUT = 5000;
 
 }

@@ -86,7 +86,7 @@ public class AkanaMonitor implements Monitor
 		List<String> oIgnoreList = splitList(strIgnoreListRaw); // Hold list of API Version IDs to Ignore.
 		
 		Map<String, JsonArray> oEndpointJSONMap = new HashMap<String, JsonArray>(); // "523fgs23.mydomain","JsonArray"
-		CloseableHttpClient oHttpClient = HttpClients.custom().setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build()).build();
+		CloseableHttpClient oHttpClient = HttpClients.custom().setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).setConnectTimeout(IConstants.HTTP_TIMEOUT).build()).build();
 		CloseableHttpResponse oResponse = null;
 		
 		/*
@@ -174,6 +174,18 @@ public class AkanaMonitor implements Monitor
 				if (oTmpResponse.getStatusLine().getStatusCode() != 200)
 				{
 					log.info("Akana gave a non-200 response. Return code is: " + oTmpResponse.getStatusLine().getStatusCode() + ". Skipping this endpoint: " + strAPIVersionID);
+					
+					// Close Response.
+					try
+					{
+						
+						oTmpResponse.close();
+					}
+					catch (Exception e)
+					{
+						log.severe("Exception caught closing endpoint response: " + e.getMessage());
+					}
+					
 					continue;
 				}
 				
