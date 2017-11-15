@@ -17,5 +17,11 @@ public class IConstants
 	public static String TOKEN_VALUE = "tokenValue";
 	
 	public static int HTTP_TIMEOUT = 5000;
+	
+	public static final String CONFIG_AKANA_ENVIRONMENT = "akanaEnvironment"; // Represents the "Environment" parameter during buildEndpointGet() method.
+	public static final String CONFIG_DURATION = "duration"; // Represents the "Duration" parameter during buildEndpointGet() method.
+	public static final String CONFIG_TIME_INTERVAL = "timeInterval"; // Represents the "TimeInterval" parameter during buildEndpointGet() method.
+	public static final String CONFIG_TIME_ZONE = "timeZone"; // Represents the "TimeZone" parameter during buildEndpointGet() method.
+	public static final String CONFIG_SHOW_SUMMARY = "showSummary"; // Represents the "ShowSummary" parameter during buildEndpointGet() method.
 
 }

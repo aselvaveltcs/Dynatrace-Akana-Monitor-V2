@@ -7,6 +7,7 @@
 
 package com.dynatrace.akanav2;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -66,6 +67,24 @@ public class AkanaMonitor implements Monitor
 		String strIgnoreListRaw = env.getConfigString(IConstants.CONFIG_IGNORE_LIST);
 		String strUsername = env.getConfigString(IConstants.CONFIG_USERNAME);
 		String strPassword = env.getConfigPassword(IConstants.CONFIG_PASSWORD);
+		
+		String strAkanaEnvironment = env.getConfigString(IConstants.CONFIG_AKANA_ENVIRONMENT);
+		String strAkanaDuration = env.getConfigString(IConstants.CONFIG_DURATION);
+		String strAkanaTimeInterval = env.getConfigString(IConstants.CONFIG_TIME_INTERVAL);
+		String strAkanaTimeZone = env.getConfigString(IConstants.CONFIG_TIME_ZONE);
+		String strAkanaShowSummary = env.getConfigString(IConstants.CONFIG_SHOW_SUMMARY);
+		
+		// Encode Time Zone
+		try
+		{
+			strAkanaTimeZone = URLEncoder.encode(strAkanaTimeZone, "UTF-8");
+		}
+		catch (Exception e)
+		{
+			log.severe("Exception caught parsing time zone: " + e.getMessage());
+			e.printStackTrace();
+			return new Status(StatusCode.ErrorInternalConfigurationProblem);
+		}
 
 		if (Utils.isNullOrEmpty(strEnvironment))
 		{
@@ -82,6 +101,11 @@ public class AkanaMonitor implements Monitor
 		log.fine("Environment: " + strEnvironment);
 		log.fine("Ignore List: " + strIgnoreListRaw);
 		log.fine("Username: " + strUsername);
+		log.fine("Akana Environment:" + strAkanaEnvironment);
+		log.fine("Akana Duration:" + strAkanaDuration);
+		log.fine("Akana Time Interval:" + strAkanaTimeInterval);
+		log.fine("Akana Time Zone:" + strAkanaTimeZone);
+		log.fine("Akana Show Summary:" + strAkanaShowSummary);
 
 		List<String> oIgnoreList = splitList(strIgnoreListRaw); // Hold list of API Version IDs to Ignore.
 		
@@ -160,7 +184,7 @@ public class AkanaMonitor implements Monitor
 		
 		for (String strAPIVersionID : oAPIVersionIDs)
 		{
-			HttpGet oGet = buildEndpointGet(strProtocol, strEnvironment, strAPIVersionID, strCookie, strTokenKey, strTokenValue);
+			HttpGet oGet = buildEndpointGet(strProtocol, strEnvironment, strAPIVersionID, strCookie, strTokenKey, strTokenValue, strAkanaEnvironment, strAkanaDuration, strAkanaTimeInterval, strAkanaTimeZone, strAkanaShowSummary);
 			
 			if (oGet == null)
 			{
@@ -178,7 +202,6 @@ public class AkanaMonitor implements Monitor
 					// Close Response.
 					try
 					{
-						
 						oTmpResponse.close();
 					}
 					catch (Exception e)
@@ -190,6 +213,8 @@ public class AkanaMonitor implements Monitor
 				}
 				
 				String strContent = EntityUtils.toString(oTmpResponse.getEntity());
+				log.fine("JSON Content: " + strContent);
+				
 				JsonParser oParser = new JsonParser();
 				JsonObject oVersionIDRootObject = oParser.parse(strContent).getAsJsonObject();
 				
@@ -456,9 +481,9 @@ public class AkanaMonitor implements Monitor
 		return oRootObject;
 	}
 
-	private HttpGet buildEndpointGet(String strProtocol, String strEnvironment, String strAPIVersionID, String strCookie, String strTokenKey, String strTokenValue)
+	private HttpGet buildEndpointGet(String strProtocol, String strEnvironment, String strAPIVersionID, String strCookie, String strTokenKey, String strTokenValue, String strAkanaEnvironment, String strAkanaDuration, String strAkanaTimeInterval, String strAkanaTimeZone, String strAkanaShowSummary)
 	{
-		String strEndpoint = buildEndpoint(strProtocol, strEnvironment, strAPIVersionID);
+		String strEndpoint = buildEndpoint(strProtocol, strEnvironment, strAPIVersionID, strAkanaEnvironment, strAkanaDuration, strAkanaTimeInterval, strAkanaTimeZone, strAkanaShowSummary);
 		
 		HttpGet oGet = new HttpGet(strEndpoint);
 		oGet.addHeader("Cookie", strCookie);
@@ -470,7 +495,7 @@ public class AkanaMonitor implements Monitor
 	 /* Returns a correctly formatted endpoint URI
 	 * https://api.domain.com/api/apis/versions/VERSION-ID/metrics?Environment=Production&Duration=5m&TimeInterval=1m&TimeZone=Europe%2FLondon&ShowSummary=true
 	 */
-	private String buildEndpoint(String strProtocol, String strEnvironment, String strVersionID)
+	private String buildEndpoint(String strProtocol, String strEnvironment, String strVersionID, String strAkanaEnvironment, String strAkanaDuration, String strAkanaTimeInterval, String strAkanaTimeZone, String strAkanaShowSummary)
 	{
 		
 		if (Utils.isNullOrEmpty(strProtocol) || Utils.isNullOrEmpty(strEnvironment) || Utils.isNullOrEmpty(strVersionID)) return null;
@@ -484,7 +509,9 @@ public class AkanaMonitor implements Monitor
 		oBuilder.append(strEnvironment);
 		oBuilder.append("/api/apis/versions/");
 		oBuilder.append(strVersionID);
-		oBuilder.append("/metrics?Environment=Production&Duration=5m&TimeInterval=1m&TimeZone=Europe%2FLondon&ShowSummary=true");
+		oBuilder.append("/metrics?Environment="+ strAkanaEnvironment +"&Duration="+ strAkanaDuration +"&TimeInterval="+ strAkanaTimeInterval +"&TimeZone="+ strAkanaTimeZone +"&ShowSummary="+ strAkanaShowSummary +"");
+		
+		log.info("buildEndpoint(): " + oBuilder.toString());
 		
 		return oBuilder.toString();
 	}
