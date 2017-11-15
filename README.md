@@ -12,10 +12,12 @@ You may (optionally) choose to pass a list of API Version IDs that you *do not* 
 This plugin has 4 compulsory and 1 optional input parameter:
 
 ## Compulsory Parameters
-1. HTTP / HTTPS (defaults to HTTP): Use this to select the protocol with which you'll query Akana.
+1. HTTP / HTTPS (defaults to HTTPS): Use this to select the protocol with which you'll query Akana.
 2. Akana Environment: This is usually in the form someid.mydomain.com (eg. `api.mysite.com`)
 2. Username: This is your Akana username (usually an email address).
 3. Password: This is your Akana password.
+4. Environment: This relates to the Akana Environment. Defaults to "Production".
+5. 
 
 ## Optional Parameters
 1. Ignore List: This is a newline separated list of API Version IDs that the plugin should ignore (ie. do _not_ pull the stats for these endpoints).
@@ -42,7 +44,14 @@ Request Body:
     "environment" : "api.mysite.com",
     "username" : "me@mysite.com",   <-- Akana Username
     "password" : "***********",      <-- Akana Password
-    "ignoreList" : "this.domain\nwhatever.domain\nthat.domain" <-- Optional newline separated list of API Version IDs to ignore.
+    
+    // Optional parameters below.
+    "ignoreList" : "this.domain\nwhatever.domain\nthat.domain", <-- Newline separated list of API Version IDs to ignore.
+    "akanaEnvironment" : "Production",
+    "duration" : "5m",
+    "timeInterval" : "5m",
+    "timeZone" : "Europe/London",
+    "showSummary" : "true"
  }
 }
 ```
