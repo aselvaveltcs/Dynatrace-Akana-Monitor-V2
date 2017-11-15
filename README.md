@@ -16,11 +16,14 @@ This plugin has 4 compulsory and 1 optional input parameter:
 2. Akana Environment: This is usually in the form someid.mydomain.com (eg. `api.mysite.com`)
 2. Username: This is your Akana username (usually an email address).
 3. Password: This is your Akana password.
-4. Environment: This relates to the Akana Environment. Defaults to "Production".
-5. 
 
 ## Optional Parameters
 1. Ignore List: This is a newline separated list of API Version IDs that the plugin should ignore (ie. do _not_ pull the stats for these endpoints).
+2. Environment: The "Environment" parameter for Akana. Defaults to "Production".
+3. Duration: The "Duration" parameter for Akana. Defaults to "5m".
+4. Time Interval: The "TimeInterval" parameter for Akana. Defaults to "5m".
+5. Time Zone: The "TimeZone" parameter for Akana. Defaults to "Europe/London".
+6. Show Summary: The "ShowSummary" parameter for Akana. Defaults to "true".
 
 # Automating
 1. Create a `dummyhost` in the infrastructure view (via Dynatrace AppMon client). You only need to do this once.
