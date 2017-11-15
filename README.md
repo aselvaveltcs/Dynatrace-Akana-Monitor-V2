@@ -9,7 +9,7 @@ This plugin, will automatically query for the available endpoints in that enviro
 You may (optionally) choose to pass a list of API Version IDs that you *do not* want to monitor.
 
 # Plugin Usage
-This plugin has 4 compulsory and 1 optional input parameter:
+This plugin has 4 compulsory and 6 optional input parameter:
 
 ## Compulsory Parameters
 1. HTTP / HTTPS (defaults to HTTPS): Use this to select the protocol with which you'll query Akana.
